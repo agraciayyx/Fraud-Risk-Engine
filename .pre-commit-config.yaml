@@ -1,0 +1,32 @@
+# Install once with `pre-commit install`; hooks then run on every commit.
+# The local hooks use the tools in your virtual environment, so activate it first.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files # stops the dataset or a model file slipping in
+        args: ["--maxkb=1000"]
+      - id: detect-private-key
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check --fix
+        language: system
+        types_or: [python, jupyter]
+      - id: ruff-format
+        name: ruff format
+        entry: ruff format
+        language: system
+        types_or: [python, jupyter]
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        types: [python]
+        pass_filenames: false
